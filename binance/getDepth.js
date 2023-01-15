@@ -6,10 +6,17 @@ class Depth {
     this.limit = limit
   }
 
-  fut() {
-    console.log(
-      `Retrieving Order Book data for ${this.symbol} with limit ${this.limit}`
-    )
+  async fut() {
+    const binanceAPI = 'https://fapi.binance.com/fapi/v1/depth'
+
+    try {
+      const response = await axios.get(
+        `${binanceAPI}?symbol=${this.symbol}&limit=${this.limit}`
+      )
+      return response.data
+    } catch (error) {
+      console.log('error fut depth' + this.symbol)
+    }
   }
 
   async spot() {
@@ -21,7 +28,7 @@ class Depth {
       )
       return response.data
     } catch (error) {
-      console.error(error)
+      console.log('error spot depth' + this.symbol)
     }
   }
 }

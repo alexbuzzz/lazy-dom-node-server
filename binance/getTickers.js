@@ -1,10 +1,14 @@
 const axios = require('axios')
 
 class Tickers {
-  fut() {
-    console.log(
-      `Retrieving Order Book data for ${this.symbol} with limit ${this.limit}`
-    )
+  async fut() {
+    const binanceAPI = 'https://fapi.binance.com/fapi/v1/ticker/price'
+    try {
+      const response = await axios.get(binanceAPI)
+      return response.data
+    } catch (error) {
+      console.log('error fut tickers')
+    }
   }
 
   async spot() {
@@ -14,7 +18,7 @@ class Tickers {
       const response = await axios.get(binanceAPI)
       return response.data
     } catch (error) {
-      console.error(error)
+      console.log('error spot tickers')
     }
   }
 }
