@@ -1,5 +1,6 @@
 const GetDepth = require('./getDepth')
 const GetTickers = require('./getTickers')
+const common = require('./common')
 
 const getTickers = new GetTickers()
 
@@ -24,12 +25,8 @@ const futCalc = async (ticker, price) => {
     const avg = Math.round(sum / top.length)
 
     domParameters.fut[ticker] = {
-      price: price,
-      coef1: avg,
-      coef2: avg * 2,
-      coef3: avg * 3,
-      coef4: avg * 4,
-      coef5: avg * 5,
+      step: common.getStep(price),
+      fillAmount: avg,
     }
   }
 }
@@ -49,12 +46,8 @@ const spotCalc = async (ticker, price) => {
     const avg = Math.round(sum / top.length)
 
     domParameters.spot[ticker] = {
-      price: price,
-      coef1: avg,
-      coef2: avg * 2,
-      coef3: avg * 3,
-      coef4: avg * 4,
-      coef5: avg * 5,
+      step: common.getStep(price),
+      fillAmount: avg,
     }
   }
 }
@@ -64,17 +57,7 @@ const start = async () => {
   const futTickers = await getTickers.fut()
   for (const el of futTickers) {
     futCalc(el.symbol, el.price)
-    await new Promise((r) => setTimeout(r, 3000))
-  }
-
-  // Spot
-  const spotAllTickers = await getTickers.spot()
-  const spotTickers = await spotAllTickers.filter(
-    (obj) => obj.symbol.includes('USDT') || obj.symbol.includes('BUSD')
-  )
-
-  for (const el of spotTickers) {
-    spotCalc(el.symbol, el.price)
+    spotCalc(el.symbol.replace('1000', '').replace('2', ''), el.price)
     await new Promise((r) => setTimeout(r, 3000))
   }
 
