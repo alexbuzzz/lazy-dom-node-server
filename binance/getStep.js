@@ -1,26 +1,21 @@
-const getStep = (price) => {
+const getStep = (price, tickSize) => {
   const currentPrice = parseFloat(price)
+
   // Price 1% above current
   const onePersAbove = (100 * currentPrice) / 99
 
-  // Nums after decimal
-  const parts = currentPrice.toString().split('.')
-  const numOfDecimals = (parts[1] || []).length
+  // Multiplicator
+  const multiplicator = Math.round(1 / tickSize)
 
-  // Make multiplicator number
-  let multiplicatorNumber = 1
-  let i = 0
-  while (i < numOfDecimals) {
-    multiplicatorNumber = multiplicatorNumber * 10
-    i++
-  }
+  // Nums after decimal
+  const numOfDecimals = multiplicator.toString().length - 1
 
   // Format price
   onePersAboveFormatted = onePersAbove.toFixed(numOfDecimals)
 
   // Step
   let deltaPriceSteps = Math.round(
-    (onePersAboveFormatted - currentPrice) * multiplicatorNumber
+    (onePersAboveFormatted - currentPrice) * multiplicator
   )
 
   // Min step = 1

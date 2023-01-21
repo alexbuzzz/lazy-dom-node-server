@@ -1,6 +1,7 @@
 const GetDepth = require('./getDepth')
 const GetTickers = require('./getTickers')
-const common = require('./common')
+const getStep = require('./getStep')
+const getTickSize = require('./getTickSize')
 
 const getTickers = new GetTickers()
 
@@ -11,7 +12,7 @@ const domParameters = {
 }
 
 // Fut
-const futCalc = async (ticker, price) => {
+const futCalc = async (ticker, price, tickSize) => {
   const getDepth = new GetDepth(ticker, 100)
   const res = await getDepth.fut()
   if (typeof res === 'object' && res !== null) {
@@ -25,14 +26,14 @@ const futCalc = async (ticker, price) => {
     const avg = Math.round(sum / top.length)
 
     domParameters.fut[ticker] = {
-      step: common.getStep(price),
+      step: getStep.getStep(price, tickSize),
       fillAmount: avg,
     }
   }
 }
 
 // Spot
-const spotCalc = async (ticker, price) => {
+const spotCalc = async (ticker, price, tickSize) => {
   const getDepth = new GetDepth(ticker, 100)
   const res = await getDepth.spot()
   if (typeof res === 'object' && res !== null) {
@@ -46,18 +47,34 @@ const spotCalc = async (ticker, price) => {
     const avg = Math.round(sum / top.length)
 
     domParameters.spot[ticker] = {
-      step: common.getStep(price),
+      step: getStep.getStep(price, tickSize),
       fillAmount: avg,
     }
   }
 }
 
 const start = async () => {
-  // Fut
+  await getTickSize.start()
+  const tickSizeData = getTickSize.data
   const futTickers = await getTickers.fut()
   for (const el of futTickers) {
-    futCalc(el.symbol, el.price)
-    spotCalc(el.symbol.replace('1000', '').replace('2', ''), el.price)
+    console.log(el.symbol)
+    if (tickSizeData.fut[el.symbol] != undefined) {
+      futCalc(el.symbol, el.price, tickSizeData.fut[el.symbol].tickSize)
+    }
+
+    if (
+      tickSizeData.spot[el.symbol.replace('1000', '').replace('2', '')] !=
+      undefined
+    ) {
+      spotCalc(
+        el.symbol.replace('1000', '').replace('2', ''),
+        el.price,
+        tickSizeData.spot[el.symbol.replace('1000', '').replace('2', '')]
+          .tickSize
+      )
+    }
+
     await new Promise((r) => setTimeout(r, 3000))
   }
 

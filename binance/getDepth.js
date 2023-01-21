@@ -15,7 +15,7 @@ class Depth {
       )
       return response.data
     } catch (error) {
-      console.log('error fut depth' + this.symbol)
+      console.log('error fut depth ' + this.symbol)
     }
   }
 
@@ -28,7 +28,7 @@ class Depth {
       )
       return response.data
     } catch (error) {
-      console.log('error spot depth' + this.symbol)
+      console.log('error spot depth ' + this.symbol)
     }
   }
 }
