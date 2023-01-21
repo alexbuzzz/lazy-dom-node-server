@@ -28,6 +28,7 @@ const futCalc = async (ticker, price, tickSize) => {
     domParameters.fut[ticker] = {
       step: getStep.getStep(price, tickSize),
       fillAmount: avg,
+      price: price,
     }
   }
 }
@@ -49,6 +50,7 @@ const spotCalc = async (ticker, price, tickSize) => {
     domParameters.spot[ticker] = {
       step: getStep.getStep(price, tickSize),
       fillAmount: avg,
+      price: price,
     }
   }
 }
