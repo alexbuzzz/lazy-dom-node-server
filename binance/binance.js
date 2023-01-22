@@ -21,9 +21,8 @@ const futCalc = async (ticker, price, tickSize) => {
       arr.shift()
       return Number(arr[0])
     })
-    const top = modifiedAll.sort((a, b) => b - a).slice(0, 20)
-    const sum = top.reduce((acc, val) => acc + val, 0)
-    const avg = Math.round(sum / top.length)
+    const sum = modifiedAll.reduce((acc, val) => acc + val, 0)
+    const avg = Math.round(sum / modifiedAll.length)
 
     domParameters.fut[ticker] = {
       step: getStep.getStep(price, tickSize),
@@ -43,9 +42,8 @@ const spotCalc = async (ticker, price, tickSize) => {
       arr.shift()
       return Number(arr[0])
     })
-    const top = modifiedAll.sort((a, b) => b - a).slice(0, 20)
-    const sum = top.reduce((acc, val) => acc + val, 0)
-    const avg = Math.round(sum / top.length)
+    const sum = modifiedAll.reduce((acc, val) => acc + val, 0)
+    const avg = Math.round(sum / modifiedAll.length)
 
     domParameters.spot[ticker] = {
       step: getStep.getStep(price, tickSize),
@@ -60,7 +58,6 @@ const start = async () => {
   const tickSizeData = getTickSize.data
   const futTickers = await getTickers.fut()
   for (const el of futTickers) {
-    console.log(el.symbol)
     if (tickSizeData.fut[el.symbol] != undefined) {
       futCalc(el.symbol, el.price, tickSizeData.fut[el.symbol].tickSize)
     }
