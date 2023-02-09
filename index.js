@@ -1,13 +1,29 @@
-const binance = require('./binance/binance')
+const dom = require('./dom/binance')
+const levels = require('./levels/binance')
 const http = require('http')
 
-binance.start()
+dom.start()
+levels.start()
 
-const server = http.createServer((req, res) => {
+// Dom server
+const domServer = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' })
-  res.end(JSON.stringify(binance.domParameters))
+  res.end(JSON.stringify(dom.domParameters))
 })
 
-server.listen(2203, () => {
-  console.log('Server running on port 2203')
+domServer.listen(2203, () => {
+  console.log('Dom server running on port 2203')
+})
+
+// Levels server
+const levelsServer = http.createServer((req, res) => {
+  res.writeHead(200, {
+    'Content-Type': 'text/plain',
+    'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
+  })
+  res.end(JSON.stringify(levels.allLevels))
+})
+
+levelsServer.listen(2204, () => {
+  console.log('Levels server running on port 2204')
 })
