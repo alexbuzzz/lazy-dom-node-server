@@ -59,7 +59,7 @@ const calcLevels = async (symbol, interval) => {
         pivotsHigh.push(klines[i][2])
       }
 
-      pivotsHigh = removeLessThan(pivotsHigh, klines[i][4])
+      pivotsHigh = removeLessThan(pivotsHigh, klines[i][2])
 
       // Low
       if (
@@ -69,29 +69,20 @@ const calcLevels = async (symbol, interval) => {
         pivotsLow.push(klines[i][3])
       }
 
-      pivotsLow = removeGreaterThan(pivotsLow, klines[i][4])
+      pivotsLow = removeGreaterThan(pivotsLow, klines[i][3])
     }
   }
 
   if (interval === '1h') {
-    allLevels.oneHour[symbol] = {
-      high: pivotsHigh,
-      low: pivotsLow,
-    }
+    allLevels.oneHour[symbol] = pivotsHigh.concat(pivotsLow)
   }
 
   if (interval === '4h') {
-    allLevels.fourHours[symbol] = {
-      high: pivotsHigh,
-      low: pivotsLow,
-    }
+    allLevels.fourHours[symbol] = pivotsHigh.concat(pivotsLow)
   }
 
   if (interval === '1d') {
-    allLevels.oneDay[symbol] = {
-      high: pivotsHigh,
-      low: pivotsLow,
-    }
+    allLevels.oneDay[symbol] = pivotsHigh.concat(pivotsLow)
   }
 }
 
@@ -108,7 +99,6 @@ const start = async () => {
 
   allLevels.isCycleFull = true
 
-  console.log('Cycle complete!')
   start()
 }
 
