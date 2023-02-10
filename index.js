@@ -19,7 +19,7 @@ domServer.listen(2203, () => {
 const levelsServer = http.createServer((req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/plain',
-    'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
+    'Access-Control-Allow-Origin': '*',
   })
   res.end(JSON.stringify(levels.allLevels))
 })
