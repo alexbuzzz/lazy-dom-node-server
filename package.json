@@ -1,11 +1,11 @@
 {
-  "name": "lazy-dom-node-server",
+  "name": "lazy-dom-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "production": "pm2 start index.js --name lazy-dom-node-server" 
+    "production": "pm2 start index.js --name lazy-dom-server"
   },
   "keywords": [],
   "author": "",

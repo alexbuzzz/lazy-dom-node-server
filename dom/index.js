@@ -13,7 +13,7 @@ const domParameters = {
 
 // Fut
 const futCalc = async (ticker, price, tickSize) => {
-  const getDepth = new GetDepth(ticker, 100)
+  const getDepth = new GetDepth(ticker, 50)
   const res = await getDepth.fut()
   if (typeof res === 'object' && res !== null) {
     const all = res.bids.concat(res.asks)
@@ -34,7 +34,7 @@ const futCalc = async (ticker, price, tickSize) => {
 
 // Spot
 const spotCalc = async (ticker, price, tickSize) => {
-  const getDepth = new GetDepth(ticker, 100)
+  const getDepth = new GetDepth(ticker, 50)
   const res = await getDepth.spot()
   if (typeof res === 'object' && res !== null) {
     const all = res.bids.concat(res.asks)
